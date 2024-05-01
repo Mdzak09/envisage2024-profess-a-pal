@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Text Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            margin-top: 30px;
+            color: #333;
+        }
+        .container {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
+        .text-area-form {
+            margin-bottom: 50px; 
+            width: 800px;
+        }
+        form {
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+        }
+        label {
+            font-weight: bold;
+            color: #555;
+            font-size: 18px;
+        }
+        textarea {
+            width: calc(100% - 22px); 
+            height: 300px;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: vertical;
+            font-size: 16px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            margin-top: 30px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 80%; 
+            max-width: 1200px; 
+            text-align: left;
+        }
+        #result p {
+            margin: 0 0 10px; 
+        }
+        #result strong {
+            color: #555; 
+        }
+        #result hr {
+            border: 0;
+            border-top: 1px solid #ccc;
+            margin: 20px 0;
+        }
+        .custom-file-upload {
+            height: 200px;
+            width: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            cursor: pointer;
+            border: 2px dashed #cacaca;
+            background-color: rgba(255, 255, 255, 1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0px 48px 35px -48px rgba(0,0,0,0.1);
+        }
+
+        .custom-file-upload .icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .custom-file-upload .icon svg {
+            height: 80px;
+            fill: rgba(75, 85, 99, 1);
+        }
+
+        .custom-file-upload .text {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+        }
+
+        .custom-file-upload .text span {
+            font-weight: 400;
+            color: rgba(75, 85, 99, 1);
+        }
+
+        .custom-file-upload input {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>AI Generated Text Detection</h1>
+    <div class="container">
+        <div class="text-area-form"> 
+            <form id="textForm">
+                <label for="textInput">Enter Text:</label><br>
+                <textarea id="textInput" name="textInput"></textarea><br>
+                <button type="submit">Detect</button>
+            </form>
+        </div>
+        <div class="file-upload-form"> 
+            <form id="fileForm" enctype="multipart/form-data">
+                <label for="fileInput">Upload your File:</label><br> <!-- Changed id to fileInput -->
+                <label class="custom-file-upload" for="fileInput">
+                    <div class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="" viewBox="0 0 24 24">
+                            <path fill="" d="M10 1C9.73478 1 9.48043 1.10536 9.29289 1.29289L3.29289 7.29289C3.10536 7.48043 3 7.73478 3 8V20C3 21.6569 4.34315 23 6 23H7C7.55228 23 8 22.5523 8 22C8 21.4477 7.55228 21 7 21H6C5.44772 21 5 20.5523 5 20V9H10C10.5523 9 11 8.55228 11 8V3H18C18.5523 3 19 3.44772 19 4V9C19 9.55228 19.4477 10 20 10C20.5523 10 21 9.55228 21 9V4C21 2.34315 19.6569 1 18 1H10ZM9 7H6.41421L9 4.41421V7ZM14 15.5C14 14.1193 15.1193 13 16.5 13C17.8807 13 19 14.1193 19 15.5V16V17H20C21.1046 17 22 17.8954 22 19C22 20.1046 21.1046 21 20 21H13C11.8954 21 11 20.1046 11 19C11 17.8954 11.8954 17 13 17H14V16V15.5ZM16.5 11C14.142 11 12.2076 12.8136 12.0156 15.122C10.2825 15.5606 9 17.1305 9 19C9 21.2091 10.7909 23 13 23H20C22.2091 23 24 21.2091 24 19C24 17.1305 22.7175 15.5606 20.9844 15.122C20.7924 12.8136 18.858 11 16.5 11Z" clip-rule="evenodd" fill-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <div class="text">
+                       <span>Click to upload file</span>
+                    </div>
+                    <input type="file" id="fileInput" name="fileInput" onchange="fileSelected(this)">
+                </label>
+                <br>
+                <button type="submit">Detect</button>
+            </form>
+        </div>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function fileSelected(input) {
+            var fileName = input.files[0].name;
+            alert("File Selected: " + fileName);
+        }
+
+        document.getElementById('textForm').addEventListener('submit', function(event) {
+            event.preventDefault(); 
+            var formData = new FormData(this); 
+            fetch('detect.php', { 
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data); 
+                var resultDiv = document.getElementById('result');
+                resultDiv.innerHTML = ""; 
+                
+                if (data.error) {
+                    resultDiv.textContent = "Error: " + data.error;
+                } else if (data.originalityai && data.originalityai.items && data.originalityai.items.length > 0) {
+                   
+                    resultDiv.innerHTML += "<p><strong>Status:</strong> Success</p>";
+                    
+                
+                    data.originalityai.items.forEach(item => {
+                        resultDiv.innerHTML += "<p><strong>Text:</strong> " + item.text + "</p>";
+                        resultDiv.innerHTML += "<p><strong>Prediction:</strong> " + item.prediction + "</p>";
+                        resultDiv.innerHTML += "<p><strong>AI Score:</strong> " + item.ai_score + "</p>";
+                        resultDiv.innerHTML += "<p><strong>AI Score Detail:</strong> " + item.ai_score_detail + "</p>";
+                        resultDiv.innerHTML += "<hr>"; 
+                    });
+                } else {
+                    resultDiv.textContent = "No items found in the response.";
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
+        document.getElementById('fileForm').addEventListener('submit', function(event) {
+            event.preventDefault(); 
+            var formData = new FormData(this); 
+            fetch('detect.php', { 
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data); 
+                var resultDiv = document.getElementById('result');
+                resultDiv.innerHTML = ""; 
+                
+                if (data.error) {
+                    resultDiv.textContent = "Error: " + data.error;
+                } else if (data.originalityai && data.originalityai.items && data.originalityai.items.length > 0) {
+                   
+                    resultDiv.innerHTML += "<p><strong>Status:</strong> Success</p>";
+                    
+                
+                    data.originalityai.items.forEach(item => {
+                        resultDiv.innerHTML += "<p><strong>Text:</strong> " + item.text + "</p>";
+                        resultDiv.innerHTML += "<p><strong>Prediction:</strong> " + item.prediction + "</p>";
+                        resultDiv.innerHTML += "<p><strong>AI Score:</strong> " + item.ai_score + "</p>";
+                        resultDiv.innerHTML += "<p><strong>AI Score Detail:</strong> " + item.ai_score_detail + "</p>";
+                        resultDiv.innerHTML += "<hr>"; 
+                    });
+                } else {
+                    resultDiv.textContent = "No items found in the response.";
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>

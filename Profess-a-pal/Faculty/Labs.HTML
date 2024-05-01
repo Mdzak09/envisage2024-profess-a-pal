@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+          background-color: #ffffff;
+            background-image: radial-gradient(rgba(12, 12, 12, 0.171) 2px, transparent 0);
+            background-size: 30px 30px;
+            background-position: -5px -5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        .int {
+            color: #ff7f50;
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
+            font-family: Arial, sans-serif; 
+            text-shadow: 0 0 5px #ff7f50;
+            margin-top: 10px;
+        }
+        .form {
+            background: #0c0f14;
+            box-shadow: 0px 187px 75px rgba(0, 0, 0, 0.01),
+            0px 105px 63px rgba(0, 0, 0, 0.05), 0px 47px 47px rgba(0, 0, 0, 0.09),
+            0px 12px 26px rgba(0, 0, 0, 0.1), 0px 0px 0px rgba(0, 0, 0, 0.1);
+            width: 360px;
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            padding: 20px;
+            position: relative;
+            border-radius: 25px;
+        }
+        .form .label {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            height: -moz-fit-content;
+            height: fit-content;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .form .label:has(input:focus) .title {
+            top: 0;
+            left: 0;
+            color: #d17842;
+        }
+        .form .label .title {
+            padding: 0 10px;
+            transition: all 300ms;
+            font-size: 16px;
+            color: #8b8e98;
+            font-weight: 600;
+            width: -moz-fit-content;
+            width: fit-content;
+            top: 14px;
+            position: relative;
+            left: 15px;
+            background: #0c0f14;
+        }
+        .form .input-field {
+            width: auto;
+            height: 50px;
+            text-indent: 15px;
+            border-radius: 15px;
+            outline: none;
+            background-color: transparent;
+            border: 1px solid #21262e;
+            transition: all 0.3s;
+            caret-color: #d17842;
+            color: #aeaeae;
+        }
+        .form .input-field:hover {
+            border-color: rgba(209, 121, 66, 0.5);
+        }
+        .form .input-field:focus {
+            border-color: #d17842;
+        }
+        .form .split {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 100%;
+            gap: 7px;
+        }
+        .form .split label {
+            width: 170px;
+        }
+        .form .checkout-btn {
+            margin-top: 20px;
+            padding: 20px 0;
+            border-radius: 25px;
+            font-weight: 700;
+            transition: all 0.3s cubic-bezier(0.15, 0.83, 0.66, 1);
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            border: none;
+            justify-content: center;
+            fill: #fff;
+            color: #fff;
+            border: 2px solid transparent;
+            background: #d17842;
+            transition: all 200ms;
+        }
+        .form .checkout-btn:active {
+            scale: 0.95;
+        }
+        .form .checkout-btn:hover {
+            color: #d17842;
+            border: 2px solid #d17842;
+            background: transparent;
+        }
+        .btn {
+            padding: 0.8em 2em 0.8em 2.5em;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 15px;
+            color: #f6fff6;
+            letter-spacing: 0.3em;
+            text-shadow: -2px 2px 5px #fab637;
+            background-color: transparent;
+            border: 2px solid #fab637;
+            box-shadow: 0 0 0px 1px #fab637,
+                0 0 10px 2px #fab637,
+                inset 0 0 0px 1px #fab637,
+                inset 0 0 10px 2px #fab637;
+            transition: 100ms;
+            margin-top: 10px;
+        }
+        .btn:hover {
+            box-shadow: 0 0 0px 1px #fab637,
+                0 0 10px 2px #fab637,
+                inset 0 0 0px 1px #fab637,
+                inset 0 0 30px 2px #fab637;
+            text-shadow: 0 0 10px #fab637;
+            transform: translateY(-5px);
+        }
+        .btn:active {
+            box-shadow: 0 0 0px 1px #42f112,
+                0 0 25px 2px #f18118,
+                inset 0 0 0px 1px #f18118,
+                inset 0 0 30px 2px #f18118;
+            transform: translateY(1px);
+        }
+        .button {
+            margin:0;
+            height: auto;
+            background: transparent;
+            padding: 0;
+            border: none;
+            cursor: pointer;
+        }
+        .button {
+            --border-right: 6px;
+            --text-stroke-color: rgba(255, 255, 255, 0.6);
+            --animation-color: #ff9837;
+            --fs-size: 48px;
+            letter-spacing: 4.2 px;
+            text-decoration: none;
+            font-size: var(--fs-size);
+            font-family: "Arial";
+            position: relative;
+            color: transparent;
+            -webkit-text-stroke: 1px var(--text-stroke-color);
+            justify-content: 5px;
+        }
+        .hover-text {
+            position: absolute;
+            box-sizing: border-box;
+            content: attr(data-text);
+            color: var(--animation-color);
+            width: 0%;
+            inset: 0;
+            border-right: var(--border-right) solid var(--animation-color);
+            overflow: hidden;
+            transition: 0.2s;
+            -webkit-text-stroke: 1px var(--animation-color);
+        }
+        .button:hover .hover-text {
+            width: 100%;
+            filter: drop-shadow(0 0 23px var(--animation-color))
+        }
+    </style>
+</head>
+<body>
+<section class="add-card page">
+    <form class="form" name="submit-to-google-sheet">
+        <div class="button" data-text="Awesome">
+            <span class="actual-text">&nbsp;Student Details&nbsp;</span>
+            <span aria-hidden="true" class="hover-text">&nbsp;Student Details&nbsp;</span>
+        </div>
+        <div class="int">Internal Marks:</div>
+        <label for="rno" class="label">
+            <span class="title">Student's Roll Number</span>
+            <input required
+                class="input-field"
+                type="text"
+                name="Roll Number"
+                title="Input title"
+                placeholder="0-120 Marks"
+            />
+        </label>
+        <div class="split">
+            <div>
+                <label for="wp" class="label">
+                    <span class="title">Write Up</span>
+                    <input  
+                        required
+                        id="wp_internal"
+                        class="input-field"
+                        type="text"
+                        name="Write Up (Internal)"
+                        title="Write Up"
+                        placeholder="0-3 Marks"
+                    />
+                </label>
+            </div>
+            <label for="exec" class="label">
+                <span class="title">Execution</span>
+                <input required
+                    id="exec_internal"
+                    class="input-field"
+                    type="text"
+                    name="Execution (Internal)"
+                    title="Execution"
+                    placeholder="0-3 Marks"
+                />
+            </label>
+        </div>
+        <div class="split">
+            <div>
+                <label for="rec" class="label">
+                    <span class="title">Record</span>
+                    <input required
+                        id="rec_internal"
+                        class="input-field"
+                        type="text"
+                        name="Record (Internal)"
+                        title="Record"
+                        placeholder="0-5 Marks"
+                    />
+                </label>
+            </div>
+            <div>
+                <label for="obs" class="label">
+                    <span class="title">Observation</span>
+                    <input required
+                        id="obs_internal"
+                        class="input-field"
+                        name="Observation (Internal)"
+                        title="Observation"
+                        placeholder="0-5 Marks"
+                    />
+                </label>
+            </div>
+        </div>
+        <div class="split">
+            <label for="viva" class="label">
+                <span class="title">Viva</span>
+                <input required
+                    id="viva_internal"
+                    class="input-field"
+                    name="Viva (Internal)"
+                    title="Viva"
+                    placeholder="0-4 Marks"
+                />
+            </label>
+            <div>
+                <label for="att" class="label">
+                    <span class="title">Attendance</span>
+                    <input required
+                        id="att_internal"
+                        class="input-field"
+                        name="Attendance"
+                        title="Attendance"
+                        placeholder="0-5 Marks"
+                    />
+                </label>
+            </div>
+        </div>
+        <div class="int">External Marks:</div>
+        <div class="split">
+            <div>
+                <label for="wp" class="label">
+                    <span class="title">Write Up</span>
+                    <input required
+                        id="wp_external"
+                        class="input-field"
+                        type="text"
+                        name="Write Up (External)"
+                        title="Write Up"
+                        placeholder="0-15 Marks"
+                    />
+                </label>
+            </div>
+            <div>
+                <label for="exec" class="label">
+                    <span class="title">Execution</span>
+                    <input required
+                        id="exec_external"
+                        class="input-field"
+                        name="Execution (External)"
+                        title="Execution"
+                        placeholder="0-15 Marks"
+                    />
+                </label>
+            </div>
+        </div>
+        <div class="split">
+            <div>
+                <label for="rec" class="label">
+                    <span class="title">Record</span>
+                    <input required
+                        id="rec_external"
+                        class="input-field"
+                        type="text"
+                        name="Record (External)"
+                        title="Record"
+                        placeholder="0-5 Marks"
+                    />
+                </label>
+            </div>
+            <div>
+                <label for="viva" class="label">
+                    <span class="title">Viva</span>
+                    <input required
+                        id="viva_external"
+                        class="input-field"
+                        name="Viva (External)"
+                        title="Viva"
+                        placeholder="0-15 Marks"
+                    />
+                </label>
+            </div>
+        </div>
+        <button type="submit" class="btn">
+            SUBMIT
+        </button>
+    </form>
+</section>
+  <script>
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbyVLZRA0ibcnpFxe95fb0rvz_mWVn3_eC0JdjMPJUodnYdeRU-gMJ8Xd6AmtZAYV-a8/exec'
+  const form = document.forms['submit-to-google-sheet']
+            form.addEventListener('submit', e => {
+              e.preventDefault()
+              fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+                .then(response => {
+                    if (response.ok) {
+                        alert('Marks submitted successfully!');
+                        form.reset();
+                    } else {
+                        throw new Error('Network response was not ok.');
+                    }
+                })
+                .catch(error => console.error('Error!', error.message))
+            })
+</script>
+</body>
+</html>

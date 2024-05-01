@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document Similarity Checker</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #111111;
+        background-image: linear-gradient(
+            32deg,
+            rgba(8, 8, 8, 0.74) 30px,
+            transparent
+        );
+        background-size: 60px 60px;
+        background-position: -5px -5px;
+        font-family: 'Roboto', sans-serif;
+    }
+    .container {
+        max-width: 500px;
+        background-color: #fff;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+    .text-title {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 20px;
+    }
+    .file-container {
+        margin-bottom: 20px;
+        width: 96%; /* Adjust the width */
+    }
+    .file-container label {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 100%;
+        height: 190px;
+        border: 2px dashed #ccc;
+        align-items: center;
+        text-align: center;
+        padding: 5px;
+        color: #404040;
+        cursor: pointer;
+    }
+    .file-container input[type="file"] {
+        display: none;
+    }
+    .file-info {
+        margin-top: 10px;
+        font-size: 14px;
+        color: #666;
+    }
+    #result {
+        margin-top: 20px;
+        font-size: 18px;
+    }
+    .file-container span {
+        width: 96px; 
+        height: 100px; 
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="text-title">Text Document Plagiarism Detector</div>
+    
+
+    <form id="roll-form" action="submit.php" method="post">
+        <label for="roll1">Enter First Roll Number:</label>
+        <input type="text" id="roll1" name="roll1" required><br><br>
+        
+        <label for="roll2">Enter Second Roll Number:</label>
+        <input type="text" id="roll2" name="roll2" required><br><br>
+        
+        <div class="file-container">
+            <label for="file1" class="labelFile">
+                <span>
+                    <svg
+                      xml:space="preserve"
+                      viewBox="0 0 184.69 184.69"
+                      xmlns:xlink="http://www.w3.org/1999/xlink"
+                      xmlns="http://www.w3.org/2000/svg"
+                      id="Capa_1"
+                      version="1.1"
+                      width="100px" 
+                      height="100px" 
+                    >
+
+                    </svg>
+                </span>
+                <p>Drag and drop your file here or click to select a file!</p>
+            </label>
+            <input type="file" id="file1" name="file1" accept=".txt">
+            <p class="file-info" id="file1-info">No file selected</p>
+        </div>
+        <div class="file-container">
+            <label for="file2" class="labelFile">
+                <span>
+                    <svg
+                      xml:space="preserve"
+                      viewBox="0 0 184.69 184.69"
+                      xmlns:xlink="http://www.w3.org/1999/xlink"
+                      xmlns="http://www.w3.org/2000/svg"
+                      id="Capa_1"
+                      version="1.1"
+                      width="100px" 
+                      height="100px" 
+                    >
+                      
+                    </svg>
+                </span>
+                <p>Drag and drop your file here or click to select a file!</p>
+            </label>
+            <input type="file" id="file2" name="file2" accept=".txt">
+            <p class="file-info" id="file2-info">No file selected</p>
+        </div>
+        
+        <label for="additionalField">Additional Field:</label>
+        <input type="text" id="additionalField" name="percentage"><br><br>
+        
+        <button type="button" onclick="compareFiles()" class="file-upload">Compare Documents</button>
+        <p id="result"></p>
+        
+        <button type="submit">Submit Data</button>
+    </form>
+</div>
+
+<script>
+// Function to display file names
+function displayFileName(inputId, fileInfoId) {
+    var fileInput = document.getElementById(inputId);
+    var fileInfo = document.getElementById(fileInfoId);
+
+    fileInput.addEventListener('change', function() {
+        if (fileInput.files.length > 0) {
+            fileInfo.innerText = "File: " + fileInput.files[0].name;
+        } else {
+            fileInfo.innerText = "No file selected";
+        }
+    });
+}
+
+// Call the function for each file input
+displayFileName('file1', 'file1-info');
+displayFileName('file2', 'file2-info');
+
+// Function to compare files
+function compareFiles() {
+    var file1 = document.getElementById('file1').files[0];
+    var file2 = document.getElementById('file2').files[0];
+    var roll1 = document.getElementById('roll1').value;
+    var roll2 = document.getElementById('roll2').value;
+
+    if (!file1 || !file2 || !roll1 || !roll2) {
+        alert("Please fill in all fields and select two files for comparison.");
+        return;
+    }
+
+    if (roll1 === roll2) {
+        alert("Please enter different roll numbers for comparison.");
+        return;
+    }
+
+    // Display the alert message
+    alert("To allocate marks based on plagiarism percentage, enter the correct percentage or else ignore it.");
+
+    var reader1 = new FileReader();
+    var reader2 = new FileReader();
+
+    reader1.onload = function(event) {
+        var text1 = event.target.result;
+        reader2.readAsText(file2);
+        reader2.onload = function(event) {
+            var text2 = event.target.result;
+            var similarPercentage = calculateSimilarity(text1, text2);
+            document.getElementById('result').innerText = "Similarity Percentage: " + similarPercentage.toFixed(2) + "%";
+        }
+    }
+
+    reader1.readAsText(file1);
+}
+
+// Function to calculate similarity percentage
+function calculateSimilarity(text1, text2) {
+    var longerText = text1.length > text2.length ? text1 : text2;
+    var shorterText = text1.length > text2.length ? text2 : text1;
+    var longerLength = longerText.length;
+
+    if (longerLength == 0) return 100.0;
+
+    var similarity = (longerLength - editDistance(longerText, shorterText)) / parseFloat(longerLength);
+    return similarity * 100;
+}
+
+// Function to calculate edit distance
+function editDistance(string1, string2) {
+    string1 = string1.toLowerCase();
+    string2 = string2.toLowerCase();
+
+    var costs = new Array();
+    for (var i = 0; i <= string1.length; i++) {
+        var lastValue = i;
+        for (var j = 0; j <= string2.length; j++) {
+            if (i == 0)
+                costs[j] = j;
+            else {
+                if (j > 0) {
+                    var newValue = costs[j - 1];
+                    if (string1.charAt(i - 1) != string2.charAt(j - 1))
+                        newValue = Math.min(Math.min(newValue, lastValue), costs[j]) + 1;
+                    costs[j - 1] = lastValue;
+                    lastValue = newValue;
+                }
+            }
+        }
+        if (i > 0)
+            costs[string2.length] = lastValue;
+    }
+    return costs[string2.length];
+}
+</script>
+</body>
+</html>
